@@ -11,17 +11,20 @@
     https://docs.rs/conrod_core/0.70.0/conrod_core/
 */
 
+type Color = [ red: number, green: number, blue: number, alpha: number ];
+
 interface TextWidgetWrapper {
     Text: TextWidget
 }
 
 interface TextWidget {
     id: string,
-    text: string?,
-    font_size: number?
+    text?: string,
+    font_size?: number,
+    color?: Color,
 }
 
 /**
  * https://docs.rs/conrod_core/0.70.0/conrod_core/widget/primitive/text/struct.Text.html
  */
-export function Text(id: string, params: TextWidget): TextWidgetWrapper;
+export function Text(id: string, params?: TextWidget): TextWidgetWrapper;
