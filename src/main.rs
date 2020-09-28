@@ -1,5 +1,8 @@
+#[macro_use] extern crate conrod;
+extern crate find_folder;
+use conrod::backend::glium::glium::{self, Surface};
+use conrod::{widget, Positionable, Colorable, Widget};
 use rusty_v8 as v8;
-use std::env;
 
 mod core;
 
@@ -15,15 +18,76 @@ fn main() {
     let scope = &mut v8::ContextScope::new(scope, context);
 
     set_globals(&context, scope);
-    // run_script(scope, "log(123)");
-    // run_script(scope, "get42()");
-    // run_script(scope, "require('./example/main')");
 
-    let mut args = env::args();
-    if args.len() > 1{
-        args.next();
-        let fname = &args.next().unwrap();
-        run_script(scope, &format!("require('{}')", fname));
+    const WIDTH: u32 = 400;
+    const HEIGHT: u32 = 200;
+
+    let mut events_loop = glium::glutin::EventsLoop::new();
+    let window = glium::glutin::WindowBuilder::new()
+                    .with_title("V8 + Conrod")
+                    .with_dimensions(WIDTH, HEIGHT);
+    let context = glium::glutin::ContextBuilder::new()
+                    .with_vsync(true)
+                    .with_multisampling(4);
+    let display = glium::Display::new(window, context, &events_loop).unwrap();
+    let mut ui = conrod::UiBuilder::new([WIDTH as f64, HEIGHT as f64]).build();
+
+    let assets = find_folder::Search::KidsThenParents(3, 5)
+        .for_folder("assets")
+        .unwrap();
+    let font_path = assets.join("fonts/NotoSans/NotoSans-Regular.ttf");
+    ui.fonts.insert_from_file(font_path).unwrap();
+
+    widget_ids!(struct Ids { text });
+    let ids = Ids::new(ui.widget_id_generator());
+
+    let image_map = conrod::image::Map::<glium::texture::Texture2d>::new();
+    let mut renderer = conrod::backend::glium::Renderer::new(&display).unwrap();
+
+    run_script(scope, "let draw = require('./js/draw')");
+
+    'main: loop {
+        {
+            let ui = &mut ui.set_widgets();
+
+            let txt = run_script(scope, "draw()");
+
+            // "Hello World!" in the middle of the screen.
+            widget::Text::new(&txt)
+                .middle_of(ui.window)
+                .color(conrod::color::WHITE)
+                .font_size(32)
+                .set(ids.text, ui);
+        }
+            
+        // Render the `Ui` and then display it on the screen.
+        if let Some(primitives) = ui.draw_if_changed() {
+            renderer.fill(&display, primitives, &image_map);
+            let mut target = display.draw();
+            target.clear_color(0.0, 0.0, 0.0, 1.0);
+            renderer.draw(&display, &mut target, &image_map).unwrap();
+            target.finish().unwrap();
+        }
+
+        let mut events = Vec::new();
+        events_loop.poll_events(|event| events.push(event));
+
+        for event in events{
+            match event {
+                glium::glutin::Event::WindowEvent { event, ..} => match event {
+                    glium::glutin::WindowEvent::Closed |
+                    glium::glutin::WindowEvent::KeyboardInput {
+                        input: glium::glutin::KeyboardInput {
+                            virtual_keycode: Some(glium::glutin::VirtualKeyCode::Escape),
+                            ..
+                        },
+                        ..
+                    } => break 'main,
+                    _ => (),
+                },
+                _ => (),
+            }
+        }
     }
 }
 
@@ -51,12 +115,14 @@ fn set_globals(context: &v8::Local<v8::Context>, scope: &mut v8::ContextScope<v8
     });
 }
 
-fn run_script(scope: &mut v8::ContextScope<v8::HandleScope>, script: &str){
+fn run_script(scope: &mut v8::ContextScope<v8::HandleScope>, script: &str) -> String {
     let code = v8::String::new(scope, script).unwrap();
     //println!("javascript code: {}", code.to_rust_string_lossy(scope));
 
     let script = v8::Script::compile(scope, code, None).unwrap();
     let result = script.run(scope).expect("Uncaught exception while executing the script");
-    let _result = result.to_string(scope).unwrap();
+    let result = result.to_string(scope).unwrap();
+
     //println!("result: {}\n", result.to_rust_string_lossy(scope));
+    result.to_rust_string_lossy(scope)
 }

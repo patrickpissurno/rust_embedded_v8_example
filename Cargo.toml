@@ -8,3 +8,5 @@ edition = "2018"
 
 [dependencies]
 rusty_v8 = "0.10.0"
+conrod = { version = "0.55.0", features = ["glium", "winit"] }
+find_folder="0.3.0"
