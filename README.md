@@ -6,11 +6,19 @@ To do anything useful you'll probably have to provide a way to read files, requi
 
 I'm not trying to recreate Node.js, Deno or anything like that here. Just playing around trying to get something working.
 
+### This branch contains my experimenal UI integration work
+It's building on top of the `master` branch and further refining it based on a "real world" use-case: driving UI from JavaScript. It uses `conrod` with `glium` for handling OpenGL and drawing stuff. Actually, `conrod` also supports `vulkano` and once I get a solid foundation, the goal is migrating it to `vulkano`.
+
 ### What I already got working:
 - a way to call JavaScript code from Rust passing data and getting the result back
 - a way to call Rust code from JavaScript passing data and getting the result back
 - `log(msg)`, my poor-man's implementation of the classic `console.log(msg)`
 - `require`, my poor-man's implementation of something that resembles Node.js' module system, except mine has a bunch of limitations and uses `eval`. But it kinda works. Be advised that it only supports absolute paths (eg. `require('C:\\files\\main')`) and relative paths (eg. `require('./main')`). It does not support those fancy `require('modulename')` calls. It also doesn't [de-dupe (cache) modules](https://nodejs.org/api/modules.html#modules_caching) yet. You can use both foward slashes and back slashes to specify your paths, but do not mix them. Finally, you can optionally specify the extension (as of now, if you do specify, it must end in '.js').
+- basic rendering
+- a generic way of defining (creating) UI elements from JavaScript
+- a generic way to update UI elements from JavaScript
+- a generic abstraction that allows `conrod` widgets to be "bridged" in order to be available within JavaScript
+- `conrod`'s `Text` widget (only a few properties are available at the moment, but it already works and more could easily be added)
 
 ### What is missing:
 - Everything not mentioned above
@@ -28,8 +36,8 @@ PS: I'm still learning Rust, so any feedback will be very much appreciated.
 
 ### How to run
 - I think I'm using Rust stable, so it shouldn't require nightly
-- Clone the repo and run `cargo run ./example/main.js`
-- You should get a `[JS] Hello World!` message printed to your console
+- Clone the repo and run `cargo run`
+- A window should pop up with some animated graphics
 - I'm running Windows 10 x64, and have not tested anything under Linux or macOS
 - If you find any issues, please report them
 
