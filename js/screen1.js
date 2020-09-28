@@ -1,3 +1,8 @@
+const ID = {
+    text: 'text',
+    text2: 'text2'
+};
+
 class Screen1 {
 
     setup(){
@@ -5,7 +10,7 @@ class Screen1 {
         this.mode = '+';
         this.target = 'Hello World!';
 
-        return [ 'text', 'text2' ];
+        return Object.keys(ID);
     }
 
     draw(){
@@ -21,8 +26,8 @@ class Screen1 {
         log(this.text);
     
         return [
-            { id: 'text', text: this.text },
-            { id: 'text2', text: '123' },
+            { id: ID.text, text: this.text },
+            { id: ID.text2, text: '123' },
         ];
     }
 
