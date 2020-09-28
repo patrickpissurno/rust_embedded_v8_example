@@ -2,13 +2,14 @@
 extern crate conrod;
 extern crate find_folder;
 use conrod::backend::glium::glium::{self, Surface};
-use conrod::{widget, Colorable, Positionable, Widget};
+use conrod::widget;
 use rusty_v8 as v8;
 use std::collections::HashMap;
 
 mod js;
 mod js_widgets;
-use js::{ run_script };
+use js::run_script;
+use js_widgets::JsWidget;
 
 fn main() {
     js::init();
@@ -63,20 +64,10 @@ fn main() {
             let ui = &mut ui.set_widgets();
 
             // executes the draw function of the current screen
-            let widgets: Vec<js_widgets::Widget> = run_script_to_object!(scope, "screen1.draw()");
+            let widgets: Vec<JsWidget> = run_script_to_object!(scope, "screen1.draw()");
 
             for widget in widgets {
-                match widget {
-                    js_widgets::Widget::Text(w) => {
-                        let id = ids.get(&w.id).unwrap();
-
-                        widget::Text::new(&w.text)
-                            .middle_of(ui.window)
-                            .color(conrod::color::WHITE)
-                            .font_size(32)
-                            .set(*id, ui);
-                    }
-                }
+                widget.do_updates(ui, &ids);
             }
         }
         // Render the `Ui` and then display it on the screen.

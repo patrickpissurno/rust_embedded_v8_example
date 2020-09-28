@@ -26,13 +26,16 @@ macro_rules! run_script_to_object {
     }};
 }
 
-pub fn init(){
+pub fn init() {
     let platform = v8::new_default_platform().unwrap();
     v8::V8::initialize_platform(platform);
     v8::V8::initialize();
 }
 
-pub fn set_globals(context: &v8::Local<v8::Context>, scope: &mut v8::ContextScope<v8::HandleScope>) {
+pub fn set_globals(
+    context: &v8::Local<v8::Context>,
+    scope: &mut v8::ContextScope<v8::HandleScope>,
+) {
     let global = context.global(scope);
 
     macro_rules! set_func {
