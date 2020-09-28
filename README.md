@@ -10,7 +10,7 @@ I'm not trying to recreate Node.js, Deno or anything like that here. Just playin
 - a way to call JavaScript code from Rust passing data and getting the result back
 - a way to call Rust code from JavaScript passing data and getting the result back
 - `log(msg)`, my poor-man's implementation of the classic `console.log(msg)`
-- `require`, my poor-man's implementation of something that resembles Node.js' module system, except mine has a bunch of limitations and uses `eval`. But it kinda works. Be advised that it only supports absolute paths (eg. `require('C:\\files\\main')`) and relative paths (eg. `require('./main')`). It does not support those fancy `require('modulename')` calls. Also, you can use both foward slashes and back slashes to specify your paths, but do not mix them. Finally, you can optionally specify the extension (as of now, if you do specify, it must end in '.js').
+- `require`, my poor-man's implementation of something that resembles Node.js' module system, except mine has a bunch of limitations and uses `eval`. But it kinda works. Be advised that it only supports absolute paths (eg. `require('C:\\files\\main')`) and relative paths (eg. `require('./main')`). It does not support those fancy `require('modulename')` calls. It also doesn't [de-dupe (cache) modules](https://nodejs.org/api/modules.html#modules_caching) yet. You can use both foward slashes and back slashes to specify your paths, but do not mix them. Finally, you can optionally specify the extension (as of now, if you do specify, it must end in '.js').
 
 ### What is missing:
 - Everything not mentioned above
