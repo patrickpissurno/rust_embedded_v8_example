@@ -1,3 +1,7 @@
+/// <reference path="./corelib/global.d.ts"/>
+
+const { Text } = require('./corelib/widgets');
+
 const ID = {
     text: 'text',
     text2: 'text2'
@@ -40,8 +44,8 @@ class Screen1 {
         log(this.text);
     
         return [
-            { Text: { id: ID.text, text: this.text } },
-            { Text: { id: ID.text2, text: '123', font_size: this.size } },
+            Text(ID.text, { text: this.text }),
+            Text(ID.text2, { text: '123', font_size: this.size }),
         ];
     }
 
