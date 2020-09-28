@@ -7,27 +7,41 @@ class Screen1 {
 
     setup(){
         this.text = '';
-        this.mode = '+';
-        this.target = 'Hello World!';
+        this.text_mode = '+';
+        this.text_target = 'Hello World!';
+
+        this.size_mode = '+';
+        this.size_min = 18;
+        this.size_max = 48;
+        this.size = this.size_min;
 
         return Object.keys(ID);
     }
 
     draw(){
-        if(this.mode === '+' && this.text !== this.target)
-            this.text = this.text + this.target[this.text.length];
-        else if(this.mode === '+' && this.text === this.target)
-            this.mode = '-';
-        else if(this.mode === '-' && this.text.length > 0)
+        if(this.text_mode === '+' && this.text !== this.text_target)
+            this.text = this.text + this.text_target[this.text.length];
+        else if(this.text_mode === '+' && this.text === this.text_target)
+            this.text_mode = '-';
+        else if(this.text_mode === '-' && this.text.length > 0)
             this.text = this.text.substr(0, this.text.length - 1);
-        else if(this.mode === '-' && this.text.length === 0)
-            this.mode = '+';
+        else if(this.text_mode === '-' && this.text.length === 0)
+            this.text_mode = '+';
+
+        if(this.size_mode === '+' && this.size < this.size_max)
+            this.size += 1;
+        else if(this.size_mode === '+' && this.size >= this.size_max)
+            this.size_mode = '-';
+        else if(this.size_mode === '-' && this.size > this.size_min)
+            this.size -= 1;
+        else if(this.size_mode === '-' && this.size <= this.size_min)
+            this.size_mode = '+';
     
         log(this.text);
     
         return [
             { Text: { id: ID.text, text: this.text } },
-            { Text: { id: ID.text2, text: '123' } },
+            { Text: { id: ID.text2, text: '123', font_size: this.size } },
         ];
     }
 
