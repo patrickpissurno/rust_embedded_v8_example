@@ -4,17 +4,12 @@ extern crate find_folder;
 use conrod::backend::glium::glium::{self, Surface};
 use conrod::{widget, Colorable, Positionable, Widget};
 use rusty_v8 as v8;
-use serde::{Deserialize};
 use std::collections::HashMap;
 
 mod js;
+mod js_widgets;
 use js::{ run_script };
-
-#[derive(Deserialize)]
-struct Text {
-    id: String,
-    text: String,
-}
+use js_widgets::{ text::Text };
 
 fn main() {
     js::init();
