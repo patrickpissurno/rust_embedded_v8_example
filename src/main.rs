@@ -3,6 +3,7 @@ extern crate find_folder;
 use conrod::backend::glium::glium::{self, Surface};
 use conrod::{widget, Positionable, Colorable, Widget};
 use rusty_v8 as v8;
+use std::collections::HashMap;
 
 mod core;
 
@@ -38,26 +39,40 @@ fn main() {
     let font_path = assets.join("fonts/NotoSans/NotoSans-Regular.ttf");
     ui.fonts.insert_from_file(font_path).unwrap();
 
-    widget_ids!(struct Ids { text });
-    let ids = Ids::new(ui.widget_id_generator());
-
     let image_map = conrod::image::Map::<glium::texture::Texture2d>::new();
     let mut renderer = conrod::backend::glium::Renderer::new(&display).unwrap();
 
-    run_script(scope, "let draw = require('./js/draw')");
+    let mut gen = ui.widget_id_generator();
+    let mut ids: HashMap<String, widget::Id> = HashMap::new();
+
+    run_script(scope, "let screen1 = require('./js/screen1')");
+
+    let ids_as_string = run_script(scope, "screen1.setup()");
+    for key in ids_as_string.split(","){
+        let id = gen.next();
+        ids.insert(key.to_owned(), id);
+    }
 
     'main: loop {
         {
             let ui = &mut ui.set_widgets();
 
-            let txt = run_script(scope, "draw()");
+            let txts = run_script(scope, "screen1.draw()");
 
-            // "Hello World!" in the middle of the screen.
-            widget::Text::new(&txt)
-                .middle_of(ui.window)
-                .color(conrod::color::WHITE)
-                .font_size(32)
-                .set(ids.text, ui);
+            for data in txts.split(","){
+
+                let mut data = data.split("=");
+
+                let key = data.next().unwrap();
+                let txt = data.next().unwrap();
+                let id = ids.get(key).unwrap();
+
+                widget::Text::new(&txt)
+                    .middle_of(ui.window)
+                    .color(conrod::color::WHITE)
+                    .font_size(32)
+                    .set(*id, ui);
+            }
         }
             
         // Render the `Ui` and then display it on the screen.
