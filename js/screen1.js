@@ -26,8 +26,8 @@ class Screen1 {
         log(this.text);
     
         return [
-            { id: ID.text, text: this.text },
-            { id: ID.text2, text: '123' },
+            { Text: { id: ID.text, text: this.text } },
+            { Text: { id: ID.text2, text: '123' } },
         ];
     }
 
