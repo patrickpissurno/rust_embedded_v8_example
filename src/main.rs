@@ -4,8 +4,24 @@ use conrod::backend::glium::glium::{self, Surface};
 use conrod::{widget, Positionable, Colorable, Widget};
 use rusty_v8 as v8;
 use std::collections::HashMap;
+use serde::{Deserialize, Serialize};
 
 mod core;
+
+macro_rules! run_script_to_object {
+    ($scope:expr, $script:expr) => {{
+        let script = format!("JSON.stringify({})", $script);
+        let res = run_script($scope, &script);
+
+        serde_json::from_str(&res).expect("Failed to deserialize JSON")
+    }};
+}
+
+#[derive(Deserialize)]
+struct Text {
+    id: String,
+    text: String,
+}
 
 fn main() {
     let platform = v8::new_default_platform().unwrap();
@@ -47,27 +63,24 @@ fn main() {
 
     run_script(scope, "let screen1 = require('./js/screen1')");
 
-    let ids_as_string = run_script(scope, "screen1.setup()");
-    for key in ids_as_string.split(","){
-        let id = gen.next();
-        ids.insert(key.to_owned(), id);
+    {
+        let ids_as_string: Vec<String> = run_script_to_object!(scope, "screen1.setup()");
+        for key in ids_as_string {
+            let id = gen.next();
+            ids.insert(key, id);
+        }
     }
 
     'main: loop {
         {
             let ui = &mut ui.set_widgets();
 
-            let txts = run_script(scope, "screen1.draw()");
+            let txts: Vec<Text> = run_script_to_object!(scope, "screen1.draw()");
 
-            for data in txts.split(","){
+            for txt in txts{
+                let id = ids.get(&txt.id).unwrap();
 
-                let mut data = data.split("=");
-
-                let key = data.next().unwrap();
-                let txt = data.next().unwrap();
-                let id = ids.get(key).unwrap();
-
-                widget::Text::new(&txt)
+                widget::Text::new(&txt.text)
                     .middle_of(ui.window)
                     .color(conrod::color::WHITE)
                     .font_size(32)

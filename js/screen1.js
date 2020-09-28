@@ -5,7 +5,7 @@ class Screen1 {
         this.mode = '+';
         this.target = 'Hello World!';
 
-        return 'text,text2';
+        return [ 'text', 'text2' ];
     }
 
     draw(){
@@ -20,7 +20,10 @@ class Screen1 {
     
         log(this.text);
     
-        return `text=${this.text},text2=123`;
+        return [
+            { id: 'text', text: this.text },
+            { id: 'text2', text: '123' },
+        ];
     }
 
 }
