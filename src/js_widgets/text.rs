@@ -7,25 +7,27 @@ pub struct Text {
     pub id: String,
     pub text: Option<String>,
     pub font_size: Option<u32>,
-    pub color: Option<(f32, f32, f32, f32)>
+    pub color: Option<(f32, f32, f32, f32)>,
 }
 
 impl Text {
     pub fn do_updates(&self, ui: &mut conrod::UiCell, ids: &HashMap<String, conrod::widget::Id>) {
         let id = ids.get(&self.id).unwrap();
 
-        let mut color = conrod::color::WHITE;
+        let txt = self.text.clone().unwrap_or("".to_owned());
+
+        let mut w = widget::Text::new(&txt).middle_of(ui.window);
+
         match self.color {
-            Some(c) => {
-                color = conrod::Color::Rgba(c.0, c.1, c.2, c.3);
-            }
-            _ => ()
+            Some(c) => w = w.color(conrod::Color::Rgba(c.0, c.1, c.2, c.3)),
+            _ => (),
         }
 
-        widget::Text::new(&self.text.as_ref().unwrap_or(&"".to_owned()))
-            .middle_of(ui.window)
-            .color(color)
-            .font_size(self.font_size.unwrap_or(32))
-            .set(*id, ui);
+        match self.font_size {
+            Some(s) => w = w.font_size(s),
+            _ => (),
+        }
+
+        w.set(*id, ui);
     }
 }
