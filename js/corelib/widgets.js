@@ -1,5 +1,12 @@
+const Position = {
+    Absolute(value){
+        return { Absolute: value };
+    }
+};
+
 module.exports = {
-    Text
+    Position,
+    Text,
 };
 
 function Text(id, params){

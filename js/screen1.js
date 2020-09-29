@@ -1,6 +1,6 @@
 /// <reference path="./corelib/global.d.ts"/>
 
-const { Text } = require('./corelib/widgets');
+const { Text, Position } = require('./corelib/widgets');
 const { Rgb, COLORS } = require('./corelib/utils');
 
 const ID = {

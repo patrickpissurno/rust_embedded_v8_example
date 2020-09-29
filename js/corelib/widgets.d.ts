@@ -13,6 +13,15 @@
 
 type Color = [ red: number, green: number, blue: number, alpha: number ];
 
+export namespace Position
+{
+    interface AbsolutePosition {
+        Absolute: number
+    }
+
+    export function Absolute(value: number): AbsolutePosition;
+}
+
 interface TextWidgetWrapper {
     Text: TextWidget
 }
@@ -22,6 +31,8 @@ interface TextWidget {
     text?: string,
     font_size?: number,
     color?: Color,
+    x_position?: Position.AbsolutePosition,
+    y_position?: Position.AbsolutePosition,
 }
 
 /**
