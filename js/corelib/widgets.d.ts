@@ -19,7 +19,57 @@ export namespace Position
         Absolute: number
     }
 
+    interface RelativePosition {
+        Relative: [ ScalarWrapper|AlignWrapper|DirectionWrapper|PlaceWrapper, string|null ]
+    }
+
+    interface ScalarWrapper {
+        Scalar: number
+    }
+
+    interface AlignWrapper {
+        Align: AlignEnum
+    }
+
+    enum AlignEnum {
+        Start = 'Start',
+        Middle = 'Middle',
+        End = 'End'
+    }
+
+    interface DirectionWrapper {
+        Direction: [ DirectionEnum, number ]
+    }
+
+    enum DirectionEnum {
+        Forwards = 'Forwards',
+        Backwards = 'Backwards',
+    }
+
+    interface PlaceWrapper {
+        Place: StartWrapper|string|EndWrapper
+    }
+
+    interface StartWrapper {
+        Start?: number
+    }
+
+    interface EndWrapper {
+        End?: number
+    }
+
+    enum PlaceEnum {
+        Start = 'Start',
+        Middle = 'Middle',
+        End = 'End'
+    }
+
     export function Absolute(value: number): AbsolutePosition;
+    export function Relative(kind: ScalarWrapper|AlignWrapper|DirectionWrapper|PlaceWrapper, id?: string): RelativePosition;
+    export function Scalar(value: number): ScalarWrapper;
+    export function Align(kind: AlignEnum): AlignWrapper;
+    export function Direction(direction: DirectionEnum, scalar: number): DirectionWrapper;
+    export function Place(kind: PlaceEnum, margin?: number): PlaceWrapper;
 }
 
 interface TextWidgetWrapper {
