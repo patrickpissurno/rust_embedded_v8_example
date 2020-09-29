@@ -20,6 +20,12 @@ class Screen1 {
         this.size_max = 48;
         this.size = this.size_min;
 
+        this.color_mode = 'g+';
+        this.color_speed = 0.1;
+        this.r = 1;
+        this.g = 0;
+        this.b = 0;
+
         return Object.keys(ID);
     }
 
@@ -41,12 +47,54 @@ class Screen1 {
             this.size -= 1;
         else if(this.size_mode === '-' && this.size <= this.size_min)
             this.size_mode = '+';
+
+        switch(this.color_mode){
+            case 'g+':
+                if(this.g < 1)
+                    this.g += this.color_speed;
+                if(this.g >= 1)
+                    this.color_mode = 'r-';
+                break;
+            case 'r-':
+                if(this.r > 0)
+                    this.r -= this.color_speed;
+                if(this.r <= 0)
+                    this.color_mode = 'b+';
+                break;
+            case 'b+':
+                if(this.b < 1)
+                    this.b += this.color_speed;
+                if(this.b >= 1)
+                    this.color_mode = 'g-';
+                break;
+            case 'g-':
+                if(this.g > 0)
+                    this.g -= this.color_speed;
+                if(this.g <= 0)
+                    this.color_mode = 'r+';
+                break;
+            case 'r+':
+                if(this.r < 1)
+                    this.r += this.color_speed;
+                if(this.r >= 1)
+                    this.color_mode = 'b-';
+                break;
+            case 'b-':
+                if(this.b > 0)
+                    this.b -= this.color_speed;
+                if(this.b <= 0)
+                    this.color_mode = 'g+';
+                break;
+        }
+        this.r = this.r > 1 ? 1 : (this.r < 0 ? 0 : this.r);
+        this.g = this.g > 1 ? 1 : (this.g < 0 ? 0 : this.g);
+        this.b = this.b > 1 ? 1 : (this.b < 0 ? 0 : this.b);
     
         log(this.text);
     
         return [
-            Text(ID.text, { text: this.text }),
-            Text(ID.text2, { text: '123', font_size: this.size, color: Rgb(0, 1, 0) }),
+            Text(ID.text, { text: this.text, color: Rgb(this.r, this.g, this.b) }),
+            Text(ID.text2, { text: '123', font_size: this.size }),
         ];
     }
 
