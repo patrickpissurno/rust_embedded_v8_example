@@ -90,6 +90,8 @@ interface TextWidget {
     no_line_wrap?: boolean,
     wrap_by_word?: boolean,
     wrap_by_character?: boolean,
+    parent?: string,
+    no_parent?: boolean,
 }
 
 /**

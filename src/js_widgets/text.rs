@@ -17,6 +17,8 @@ pub struct Text {
     pub no_line_wrap: Option<bool>,
     pub wrap_by_word: Option<bool>,
     pub wrap_by_character: Option<bool>,
+    pub parent: Option<String>,
+    pub no_parent: Option<bool>,
 }
 
 impl Text {
@@ -71,6 +73,21 @@ impl Text {
         
         w = match &self.wrap_by_character {
             Some(true) => w.wrap_by_character(),
+            _ => w,
+        };
+        
+        w = match &self.parent {
+            Some(id) => {
+                match ids.get(id) {
+                    Some(id) => w.parent(*id),
+                    None => w
+                }
+            },
+            _ => w,
+        };
+        
+        w = match &self.no_parent {
+            Some(true) => w.no_parent(),
             _ => w,
         };
 
