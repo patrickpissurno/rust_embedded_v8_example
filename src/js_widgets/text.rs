@@ -19,6 +19,8 @@ pub struct Text {
     pub wrap_by_character: Option<bool>,
     pub parent: Option<String>,
     pub no_parent: Option<bool>,
+    pub graphics_for: Option<String>,
+    pub floating: Option<bool>,
 }
 
 impl Text {
@@ -88,6 +90,21 @@ impl Text {
         
         w = match &self.no_parent {
             Some(true) => w.no_parent(),
+            _ => w,
+        };
+        
+        w = match &self.graphics_for {
+            Some(id) => {
+                match ids.get(id) {
+                    Some(id) => w.graphics_for(*id),
+                    None => w
+                }
+            },
+            _ => w,
+        };
+        
+        w = match &self.floating {
+            Some(b) => w.floating(*b),
             _ => w,
         };
 

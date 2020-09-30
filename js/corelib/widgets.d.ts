@@ -92,6 +92,8 @@ interface TextWidget {
     wrap_by_character?: boolean,
     parent?: string,
     no_parent?: boolean,
+    graphics_for?: string,
+    floating?: boolean,
 }
 
 /**
