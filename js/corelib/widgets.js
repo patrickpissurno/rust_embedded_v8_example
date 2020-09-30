@@ -35,8 +35,21 @@ const Position = {
     }
 };
 
+const Dimension = {
+    Absolute(value){
+        return { Absolute: value };
+    },
+    Of(id, padding){
+        return { Of: [ id, padding ] };
+    },
+    KidAreaOf(id, padding){
+        return { Of: [ id, padding ] };
+    }
+};
+
 module.exports = {
     Position,
+    Dimension,
     Text,
 };
 

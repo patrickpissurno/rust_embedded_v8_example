@@ -1,6 +1,6 @@
 /// <reference path="./corelib/global.d.ts"/>
 
-const { Text, Position } = require('./corelib/widgets');
+const { Text, Position, Dimension } = require('./corelib/widgets');
 const { Rgb, COLORS } = require('./corelib/utils');
 
 const ID = {
@@ -96,7 +96,7 @@ class Screen1 {
     
         return [
             Text(ID.text, { text: this.text, font_size: 32, color: Rgb(this.r, this.g, this.b) }),
-            Text(ID.text2, { text: '123', font_size: this.size, color: COLORS.WHITE, x_position: xpos }),
+            Text(ID.text2, { text: '123', font_size: this.size, color: COLORS.WHITE, x_position: xpos, x_dimension: Dimension.Absolute(10) }),
         ];
     }
 

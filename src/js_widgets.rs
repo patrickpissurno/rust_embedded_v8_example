@@ -42,6 +42,13 @@ pub enum Place {
 }
 
 #[derive(Deserialize)]
+pub enum Dimension {
+    Absolute(Scalar),
+    Of(Id, Option<Scalar>),
+    KidAreaOf(Id, Option<Scalar>),
+}
+
+#[derive(Deserialize)]
 pub enum JsWidget {
     Text(text::Text),
 }

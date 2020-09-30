@@ -1,4 +1,4 @@
-use conrod::{widget, Colorable, position, Position, Positionable, Widget};
+use conrod::{widget, Colorable, position, Position, position::Dimension, Sizeable, Positionable, Widget};
 use serde::Deserialize;
 use std::collections::HashMap;
 
@@ -10,6 +10,8 @@ pub struct Text {
     pub color: Option<(f32, f32, f32, f32)>,
     pub x_position: Option<super::Position>,
     pub y_position: Option<super::Position>,
+    pub x_dimension: Option<super::Dimension>,
+    pub y_dimension: Option<super::Dimension>,
     pub left_justify: Option<bool>,
     pub center_justify: Option<bool>,
     pub right_justify: Option<bool>,
@@ -191,10 +193,36 @@ impl Text {
             }};
         }
 
+        // the same thing as positions above, but for dimensions
+        macro_rules! match_dimension {
+            ($identifier:ident) => {{
+                match &self.$identifier {
+                    Some(p) => {
+                        match p {
+                            super::Dimension::Absolute(a) => w = w.$identifier(Dimension::Absolute(*a)),
+                            super::Dimension::Of(id, v) => {
+                                if let Some(id) = ids.get(id){
+                                    w = w.$identifier(Dimension::Of(*id, *v));
+                                }        
+                            },
+                            super::Dimension::KidAreaOf(id, v) => {
+                                if let Some(id) = ids.get(id){
+                                    w = w.$identifier(Dimension::KidAreaOf(*id, *v));
+                                }        
+                            },
+                        }
+                    },
+                    _ => (),
+                }
+            }};
+        }
+
         // just calling the macro to generate code for both
         // the X and Y coordinates
         match_position!(x_position);
         match_position!(y_position);
+        match_dimension!(x_dimension);
+        match_dimension!(y_dimension);
 
         w.set(*id, ui);
     }

@@ -72,6 +72,25 @@ export namespace Position
     export function Place(kind: PlaceEnum, margin?: number): PlaceWrapper;
 }
 
+export namespace Dimension
+{
+    interface AbsoluteDimension {
+        Absolute: number
+    }
+
+    interface OfDimension {
+        Of: [ string, number|null ]
+    }
+
+    interface KidAreaOfDimension {
+        KidAreaOf: [ string, number|null ]
+    }
+
+    export function Absolute(value: number): AbsoluteDimension;
+    export function Of(id: string, padding?: number): OfDimension;
+    export function KidAreaOf(id: string, padding?: number): KidAreaOfDimension;
+}
+
 interface TextWidgetWrapper {
     Text: TextWidget
 }
@@ -81,8 +100,10 @@ interface TextWidget {
     text?: string,
     font_size?: number,
     color?: Color,
-    x_position?: Position.AbsolutePosition,
-    y_position?: Position.AbsolutePosition,
+    x_position?: Position.AbsolutePosition | Position.RelativePosition,
+    y_position?: Position.AbsolutePosition | Position.RelativePosition,
+    x_dimension?: Dimension.AbsoluteDimension | Dimension.OfDimension | Dimension.KidAreaOfDimension,
+    y_dimension?: Dimension.AbsoluteDimension | Dimension.OfDimension | Dimension.KidAreaOfDimension,
     left_justify?: boolean,
     center_justify?: boolean,
     right_justify?: boolean,
