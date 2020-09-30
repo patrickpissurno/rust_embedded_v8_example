@@ -10,6 +10,9 @@ pub struct Text {
     pub color: Option<(f32, f32, f32, f32)>,
     pub x_position: Option<super::Position>,
     pub y_position: Option<super::Position>,
+    pub left_justify: Option<bool>,
+    pub center_justify: Option<bool>,
+    pub right_justify: Option<bool>,
 }
 
 impl Text {
@@ -20,15 +23,32 @@ impl Text {
 
         let mut w = widget::Text::new(&txt).middle_of(ui.window);
 
-        match &self.color {
-            Some(c) => w = w.color(conrod::Color::Rgba(c.0, c.1, c.2, c.3)),
-            _ => (),
-        }
+        w = match &self.color {
+            Some(c) => w.color(conrod::Color::Rgba(c.0, c.1, c.2, c.3)),
+            _ => w,
+        };
 
-        match &self.font_size {
-            Some(s) => w = w.font_size(*s),
-            _ => (),
-        }
+        w = match &self.font_size {
+            Some(s) => w.font_size(*s),
+            _ => w,
+        };
+
+        w = match &self.left_justify {
+            Some(true) => {
+                w.left_justify()
+            },
+            _ => w,
+        };
+
+        w = match &self.center_justify {
+            Some(true) => w.center_justify(),
+            _ => w,
+        };
+
+        w = match &self.right_justify {
+            Some(true) => w.right_justify(),
+            _ => w,
+        };
 
         // Works the same way as the above implementations of other attributes,
         // except this one is WAY more complicated thanks to it being a enum with

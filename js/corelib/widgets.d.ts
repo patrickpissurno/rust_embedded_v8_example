@@ -83,6 +83,9 @@ interface TextWidget {
     color?: Color,
     x_position?: Position.AbsolutePosition,
     y_position?: Position.AbsolutePosition,
+    left_justify?: boolean,
+    center_justify?: boolean,
+    right_justify?: boolean,
 }
 
 /**
