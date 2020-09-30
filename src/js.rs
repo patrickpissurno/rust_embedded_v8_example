@@ -3,26 +3,68 @@ use rusty_v8 as v8;
 pub mod log;
 pub mod require;
 
-pub fn run_script(scope: &mut v8::ContextScope<v8::HandleScope>, script: &str) -> String {
-    let code = v8::String::new(scope, script).unwrap();
-    //println!("javascript code: {}", code.to_rust_string_lossy(scope));
-
-    let script = v8::Script::compile(scope, code, None).unwrap();
+pub fn run_script(
+    scope: &mut v8::ContextScope<v8::HandleScope>,
+    script: v8::Local<v8::Script>,
+) -> String {
     let result = script
         .run(scope)
         .expect("Uncaught exception while executing the script");
+
     let result = result.to_string(scope).unwrap();
 
     //println!("result: {}\n", result.to_rust_string_lossy(scope));
     result.to_rust_string_lossy(scope)
 }
 
+pub fn run_script_no_result(
+    scope: &mut v8::ContextScope<v8::HandleScope>,
+    script: v8::Local<v8::Script>,
+) {
+    script
+        .run(scope)
+        .expect("Uncaught exception while executing the script");
+}
+
+#[macro_export]
+macro_rules! precompile_script {
+    ($scope:expr, $script:expr) => {{
+        let code = v8::String::new($scope, $script).unwrap();
+        //println!("javascript code: {}", code.to_rust_string_lossy(scope));
+
+        v8::Script::compile($scope, code, None).unwrap()
+    }};
+}
+
+#[macro_export]
+macro_rules! precompile_script_to_object {
+    ($scope:expr, $script:expr) => {{
+        let script = format!("JSON.stringify({})", $script);
+        precompile_script!($scope, &script)
+    }};
+}
+
 #[macro_export]
 macro_rules! run_script_to_object {
     ($scope:expr, $script:expr) => {{
-        let script = format!("JSON.stringify({})", $script);
-        let res = run_script($scope, &script);
+        let res = run_script($scope, $script);
         serde_json::from_str(&res).expect("Failed to deserialize JSON")
+    }};
+}
+
+#[macro_export]
+macro_rules! eval_script {
+    ($scope:expr, $script:expr) => {{
+        let script = precompile_script!($scope, $script);
+        run_script($scope, script)
+    }};
+}
+
+#[macro_export]
+macro_rules! eval_script_to_object {
+    ($scope:expr, $script:expr) => {{
+        let script = precompile_script_to_object!($scope, $script);
+        run_script_to_object!($scope, script)
     }};
 }
 
@@ -30,6 +72,8 @@ pub fn init() {
     let platform = v8::new_default_platform().unwrap();
     v8::V8::initialize_platform(platform);
     v8::V8::initialize();
+
+    v8::V8::set_flags_from_command_line(vec!["".to_string(), "--expose-gc".to_string()]);
 }
 
 pub fn set_globals(

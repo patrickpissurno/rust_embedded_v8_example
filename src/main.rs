@@ -8,7 +8,7 @@ use std::collections::HashMap;
 
 mod js;
 mod js_widgets;
-use js::run_script;
+use js::{run_script, run_script_no_result};
 use js_widgets::JsWidget;
 
 fn main() {
@@ -21,6 +21,8 @@ fn main() {
     let scope = &mut v8::ContextScope::new(scope, context);
 
     js::set_globals(&context, scope);
+
+    let js_gc = precompile_script!(scope, "gc()");
 
     const WIDTH: u32 = 400;
     const HEIGHT: u32 = 200;
@@ -47,28 +49,36 @@ fn main() {
     let mut gen = ui.widget_id_generator();
     let mut ids: HashMap<String, widget::Id> = HashMap::new();
 
-    run_script(scope, "let screen1 = require('./js/screen1')");
+    eval_script!(scope, "let screen1 = require('./js/screen1')");
 
     // executes the setup function of the current screen in order to generate
     // the ids that conrod requires
     {
-        let ids_as_string: Vec<String> = run_script_to_object!(scope, "screen1.setup()");
+        let ids_as_string: Vec<String> = eval_script_to_object!(scope, "screen1.setup()");
         for key in ids_as_string {
             let id = gen.next();
             ids.insert(key, id);
         }
     }
 
+    let screen1_draw = precompile_script_to_object!(scope, "screen1.draw()");
+
+    run_script_no_result(scope, js_gc);
+
     'main: loop {
         {
             let ui = &mut ui.set_widgets();
 
             // executes the draw function of the current screen
-            let widgets: Vec<JsWidget> = run_script_to_object!(scope, "screen1.draw()");
+            let widgets: Vec<JsWidget> = run_script_to_object!(scope, screen1_draw);
 
             for widget in widgets {
                 widget.do_updates(ui, &ids);
             }
+
+            // calls the V8 Garbage Collector to avoid leaking memory
+            //TODO: this should not be called this frequently
+            run_script_no_result(scope, js_gc);
         }
         // Render the `Ui` and then display it on the screen.
         if let Some(primitives) = ui.draw_if_changed() {

@@ -90,7 +90,7 @@ class Screen1 {
         this.g = this.g > 1 ? 1 : (this.g < 0 ? 0 : this.g);
         this.b = this.b > 1 ? 1 : (this.b < 0 ? 0 : this.b);
     
-        log(this.text);
+        // log(this.text);
 
         let xpos = Position.Relative(Position.Direction(Position.DirectionEnum.Forwards, 60), ID.text);
     
