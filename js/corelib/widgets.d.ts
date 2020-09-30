@@ -87,6 +87,9 @@ interface TextWidget {
     center_justify?: boolean,
     right_justify?: boolean,
     line_spacing?: number,
+    no_line_wrap?: boolean,
+    wrap_by_word?: boolean,
+    wrap_by_character?: boolean,
 }
 
 /**

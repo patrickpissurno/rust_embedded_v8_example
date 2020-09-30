@@ -14,6 +14,9 @@ pub struct Text {
     pub center_justify: Option<bool>,
     pub right_justify: Option<bool>,
     pub line_spacing: Option<f64>,
+    pub no_line_wrap: Option<bool>,
+    pub wrap_by_word: Option<bool>,
+    pub wrap_by_character: Option<bool>,
 }
 
 impl Text {
@@ -53,6 +56,21 @@ impl Text {
 
         w = match &self.line_spacing {
             Some(v) => w.line_spacing(*v),
+            _ => w,
+        };
+        
+        w = match &self.no_line_wrap {
+            Some(true) => w.no_line_wrap(),
+            _ => w,
+        };
+        
+        w = match &self.wrap_by_word {
+            Some(true) => w.wrap_by_word(),
+            _ => w,
+        };
+        
+        w = match &self.wrap_by_character {
+            Some(true) => w.wrap_by_character(),
             _ => w,
         };
 
