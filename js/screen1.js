@@ -95,7 +95,7 @@ class Screen1 {
         let xpos = Position.Relative(Position.Direction(Position.DirectionEnum.Forwards, 60), ID.text);
     
         return [
-            Text(ID.text, { text: this.text, font_size: 32, color: Rgb(this.r, this.g, this.b), center_justify: true }),
+            Text(ID.text, { text: this.text, font_size: 32, color: Rgb(this.r, this.g, this.b) }),
             Text(ID.text2, { text: '123', font_size: this.size, color: COLORS.WHITE, x_position: xpos }),
         ];
     }

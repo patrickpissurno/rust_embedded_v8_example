@@ -13,6 +13,7 @@ pub struct Text {
     pub left_justify: Option<bool>,
     pub center_justify: Option<bool>,
     pub right_justify: Option<bool>,
+    pub line_spacing: Option<f64>,
 }
 
 impl Text {
@@ -47,6 +48,11 @@ impl Text {
 
         w = match &self.right_justify {
             Some(true) => w.right_justify(),
+            _ => w,
+        };
+
+        w = match &self.line_spacing {
+            Some(v) => w.line_spacing(*v),
             _ => w,
         };
 
