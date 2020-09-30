@@ -8,6 +8,7 @@ pub struct Text {
     pub text: Option<String>,
     pub font_size: Option<u32>,
     pub color: Option<(f32, f32, f32, f32)>,
+    pub depth: Option<f32>,
     pub x_position: Option<super::Position>,
     pub y_position: Option<super::Position>,
     pub x_dimension: Option<super::Dimension>,
@@ -137,6 +138,11 @@ impl Text {
 
         w = match &self.place_on_kid_area {
             Some(b) => w.place_on_kid_area(*b),
+            _ => w,
+        };
+
+        w = match &self.depth {
+            Some(v) => w.depth(*v),
             _ => w,
         };
 

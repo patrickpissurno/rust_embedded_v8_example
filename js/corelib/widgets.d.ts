@@ -100,6 +100,7 @@ interface TextWidget {
     text?: string,
     font_size?: number,
     color?: Color,
+    depth?: number,
     x_position?: Position.AbsolutePosition | Position.RelativePosition,
     y_position?: Position.AbsolutePosition | Position.RelativePosition,
     x_dimension?: Dimension.AbsoluteDimension | Dimension.OfDimension | Dimension.KidAreaOfDimension,
