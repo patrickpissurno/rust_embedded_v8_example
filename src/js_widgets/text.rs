@@ -21,6 +21,10 @@ pub struct Text {
     pub no_parent: Option<bool>,
     pub graphics_for: Option<String>,
     pub floating: Option<bool>,
+    pub crop_kids: Option<bool>,
+    pub scroll_kids: Option<bool>,
+    pub scroll_kids_vertically: Option<bool>,
+    pub scroll_kids_horizontally: Option<bool>,
 }
 
 impl Text {
@@ -105,6 +109,26 @@ impl Text {
         
         w = match &self.floating {
             Some(b) => w.floating(*b),
+            _ => w,
+        };
+
+        w = match &self.crop_kids {
+            Some(true) => w.crop_kids(),
+            _ => w,
+        };
+
+        w = match &self.scroll_kids {
+            Some(true) => w.scroll_kids(),
+            _ => w,
+        };
+
+        w = match &self.scroll_kids_vertically {
+            Some(true) => w.scroll_kids_vertically(),
+            _ => w,
+        };
+
+        w = match &self.scroll_kids_horizontally {
+            Some(true) => w.scroll_kids_horizontally(),
             _ => w,
         };
 

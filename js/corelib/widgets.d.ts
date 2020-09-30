@@ -94,6 +94,10 @@ interface TextWidget {
     no_parent?: boolean,
     graphics_for?: string,
     floating?: boolean,
+    crop_kids?: boolean,
+    scroll_kids?: boolean,
+    scroll_kids_vertically?: boolean,
+    scroll_kids_horizontally?: boolean,
 }
 
 /**
