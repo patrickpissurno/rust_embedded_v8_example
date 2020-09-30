@@ -98,6 +98,7 @@ interface TextWidget {
     scroll_kids?: boolean,
     scroll_kids_vertically?: boolean,
     scroll_kids_horizontally?: boolean,
+    place_on_kid_area?: boolean,
 }
 
 /**

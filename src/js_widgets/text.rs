@@ -25,6 +25,7 @@ pub struct Text {
     pub scroll_kids: Option<bool>,
     pub scroll_kids_vertically: Option<bool>,
     pub scroll_kids_horizontally: Option<bool>,
+    pub place_on_kid_area: Option<bool>,
 }
 
 impl Text {
@@ -129,6 +130,11 @@ impl Text {
 
         w = match &self.scroll_kids_horizontally {
             Some(true) => w.scroll_kids_horizontally(),
+            _ => w,
+        };
+
+        w = match &self.place_on_kid_area {
+            Some(b) => w.place_on_kid_area(*b),
             _ => w,
         };
 
