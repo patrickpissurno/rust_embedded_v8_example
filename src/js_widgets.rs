@@ -1,6 +1,7 @@
 use serde::Deserialize;
 use std::collections::HashMap;
 
+pub mod macros;
 pub mod text;
 
 pub type Scalar = f64;
@@ -10,7 +11,7 @@ pub type Id = String;
 #[derive(Deserialize)]
 pub enum Position {
     Absolute(Scalar),
-    Relative(Relative, Option<Id>)
+    Relative(Relative, Option<Id>),
 }
 
 #[derive(Deserialize)]
