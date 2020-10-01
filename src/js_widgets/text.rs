@@ -48,7 +48,8 @@ impl Text {
 
         let txt = self.text.clone().unwrap_or("".to_owned());
 
-        let mut w = widget::Text::new(&txt).middle_of(ui.window);
+        let mut w = widget::Text::new(&txt)
+            .middle_of(ui.window); //TODO: remove this, as it should be controlled only through JavaScript
 
         crate::do_updates_common!(self, w, ids);
         crate::do_updates_color!(self, w, ids);
