@@ -51,8 +51,13 @@ module.exports = {
     Position,
     Dimension,
     Text,
+    Rectangle,
 };
 
 function Text(id, params){
     return { Text: Object.assign({ id }, params) };
+}
+
+function Rectangle(id, params){
+    return { Rectangle: Object.assign({ id }, params) };
 }

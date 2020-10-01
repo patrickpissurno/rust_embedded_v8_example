@@ -144,7 +144,22 @@ interface TextWidget extends Widget, Colorable, Positionable, Sizeable {
     wrap_by_character?: boolean,
 }
 
+// Rectangle widget
+interface RectangleWidgetWrapper {
+    Rectangle: RectangleWidget
+}
+
+interface RectangleWidget extends Widget, Colorable, Positionable, Sizeable {
+    fill?: boolean,
+    outline?: boolean,
+}
+
 /**
  * https://docs.rs/conrod_core/0.70.0/conrod_core/widget/primitive/text/struct.Text.html
  */
 export function Text(id: string, params?: TextWidget): TextWidgetWrapper;
+
+/**
+ * https://docs.rs/conrod_core/0.70.0/conrod_core/widget/primitive/shape/rectangle/struct.Rectangle.html
+ */
+export function Rectangle(id: string, params?: RectangleWidget): RectangleWidgetWrapper;

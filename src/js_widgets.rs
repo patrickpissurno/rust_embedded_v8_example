@@ -2,6 +2,7 @@ use serde::Deserialize;
 use std::collections::HashMap;
 
 pub mod macros;
+pub mod rectangle;
 pub mod text;
 
 pub type Scalar = f64;
@@ -52,12 +53,16 @@ pub enum Dimension {
 #[derive(Deserialize)]
 pub enum JsWidget {
     Text(text::Text),
+    Rectangle(rectangle::Rectangle),
 }
 
 impl JsWidget {
     pub fn do_updates(&self, ui: &mut conrod::UiCell, ids: &HashMap<String, conrod::widget::Id>) {
         match self {
             JsWidget::Text(w) => {
+                w.do_updates(ui, ids);
+            }
+            JsWidget::Rectangle(w) => {
                 w.do_updates(ui, ids);
             }
         }

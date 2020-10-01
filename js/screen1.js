@@ -1,11 +1,12 @@
 /// <reference path="./corelib/global.d.ts"/>
 
-const { Text, Position, Dimension } = require('./corelib/widgets');
-const { Rgb, COLORS, DEFAULT_IDS } = require('./corelib/utils');
+const { Position, Dimension, Text, Rectangle, } = require('./corelib/widgets');
+const { DEFAULT_IDS, COLORS, Rgb, } = require('./corelib/utils');
 
 const IDS = {
     text: 'text',
-    text2: 'text2'
+    text2: 'text2',
+    rec1: 'rec1',
 };
 
 class Screen1 {
@@ -93,12 +94,14 @@ class Screen1 {
         // log(this.text);
 
         let center_window = Position.Relative(Position.Place(Position.PlaceEnum.Middle), DEFAULT_IDS.window);
+        let start_window = Position.Relative(Position.Place(Position.PlaceEnum.Start, 5), DEFAULT_IDS.window);
         let xpos = Position.Relative(Position.Direction(Position.DirectionEnum.Forwards, 60), IDS.text);
         let ypos = Position.Relative(Position.Place(Position.PlaceEnum.Middle), IDS.text);
     
         return [
             Text(IDS.text, { text: this.text, font_size: 32, color: Rgb(this.r, this.g, this.b), x_position: center_window, y_position: center_window }),
             Text(IDS.text2, { text: '123', font_size: this.size, color: COLORS.WHITE, x_position: xpos, y_position: ypos, x_dimension: Dimension.Absolute(10) }),
+            Rectangle(IDS.rec1, { outline: true, x_position: start_window, y_position: start_window, x_dimension: Dimension.Absolute(100), y_dimension: Dimension.Absolute(50), color: Rgb(this.g, this.b, this.r) }),
         ];
     }
 
