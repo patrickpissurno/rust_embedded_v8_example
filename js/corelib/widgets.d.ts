@@ -96,22 +96,8 @@ interface TextWidgetWrapper {
 }
 
 interface TextWidget {
+    // shared by all widgets
     id: string,
-    text?: string,
-    font_size?: number,
-    color?: Color,
-    depth?: number,
-    x_position?: Position.AbsolutePosition | Position.RelativePosition,
-    y_position?: Position.AbsolutePosition | Position.RelativePosition,
-    x_dimension?: Dimension.AbsoluteDimension | Dimension.OfDimension | Dimension.KidAreaOfDimension,
-    y_dimension?: Dimension.AbsoluteDimension | Dimension.OfDimension | Dimension.KidAreaOfDimension,
-    left_justify?: boolean,
-    center_justify?: boolean,
-    right_justify?: boolean,
-    line_spacing?: number,
-    no_line_wrap?: boolean,
-    wrap_by_word?: boolean,
-    wrap_by_character?: boolean,
     parent?: string,
     no_parent?: boolean,
     graphics_for?: string,
@@ -121,6 +107,29 @@ interface TextWidget {
     scroll_kids_vertically?: boolean,
     scroll_kids_horizontally?: boolean,
     place_on_kid_area?: boolean,
+
+    // colorable
+    color?: Color,
+
+    // positionable
+    depth?: number,
+    x_position?: Position.AbsolutePosition | Position.RelativePosition,
+    y_position?: Position.AbsolutePosition | Position.RelativePosition,
+
+    // sizeable
+    x_dimension?: Dimension.AbsoluteDimension | Dimension.OfDimension | Dimension.KidAreaOfDimension,
+    y_dimension?: Dimension.AbsoluteDimension | Dimension.OfDimension | Dimension.KidAreaOfDimension,
+
+    // specific to this widget
+    text?: string,
+    font_size?: number,
+    left_justify?: boolean,
+    center_justify?: boolean,
+    right_justify?: boolean,
+    line_spacing?: number,
+    no_line_wrap?: boolean,
+    wrap_by_word?: boolean,
+    wrap_by_character?: boolean,
 }
 
 /**
