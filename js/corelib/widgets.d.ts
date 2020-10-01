@@ -91,12 +91,9 @@ export namespace Dimension
     export function KidAreaOf(id: string, padding?: number): KidAreaOfDimension;
 }
 
-interface TextWidgetWrapper {
-    Text: TextWidget
-}
-
-interface TextWidget {
-    // shared by all widgets
+// shared by all widgets
+// https://docs.rs/conrod_core/0.70.0/conrod_core/widget/trait.Widget.html
+interface Widget {
     id: string,
     parent?: string,
     no_parent?: boolean,
@@ -107,20 +104,35 @@ interface TextWidget {
     scroll_kids_vertically?: boolean,
     scroll_kids_horizontally?: boolean,
     place_on_kid_area?: boolean,
+}
 
-    // colorable
+// colorable trait
+// https://docs.rs/conrod_core/0.70.0/conrod_core/color/trait.Colorable.html
+interface Colorable {
     color?: Color,
+}
 
-    // positionable
+// positionable trait
+// https://docs.rs/conrod_core/0.70.0/conrod_core/position/trait.Positionable.html
+interface Positionable {
     depth?: number,
     x_position?: Position.AbsolutePosition | Position.RelativePosition,
     y_position?: Position.AbsolutePosition | Position.RelativePosition,
+}
 
-    // sizeable
+// sizeable trait
+// https://docs.rs/conrod_core/0.70.0/conrod_core/position/trait.Sizeable.html
+interface Sizeable {
     x_dimension?: Dimension.AbsoluteDimension | Dimension.OfDimension | Dimension.KidAreaOfDimension,
     y_dimension?: Dimension.AbsoluteDimension | Dimension.OfDimension | Dimension.KidAreaOfDimension,
+}
 
-    // specific to this widget
+// Text widget
+interface TextWidgetWrapper {
+    Text: TextWidget
+}
+
+interface TextWidget extends Widget, Colorable, Positionable, Sizeable {
     text?: string,
     font_size?: number,
     left_justify?: boolean,
