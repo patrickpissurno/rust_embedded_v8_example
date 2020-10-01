@@ -60,22 +60,18 @@ impl Text {
             Some(s) => w.font_size(*s),
             _ => w,
         };
-
         w = match &self.left_justify {
             Some(true) => w.left_justify(),
             _ => w,
         };
-
         w = match &self.center_justify {
             Some(true) => w.center_justify(),
             _ => w,
         };
-
         w = match &self.right_justify {
             Some(true) => w.right_justify(),
             _ => w,
         };
-
         w = match &self.line_spacing {
             Some(v) => w.line_spacing(*v),
             _ => w,
