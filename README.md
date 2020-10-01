@@ -4,10 +4,10 @@ This a research project about how to properly embed V8 into a Rust program.
 I'm using `rusty_v8`, which does all the heavy lifting. But what you get from it is bare-bones access to V8.
 To do anything useful you'll probably have to provide a way to read files, require modules, etc.
 
-I'm not trying to recreate Node.js, Deno or anything like that here. Just playing around trying to get something working.
+I'm not trying to recreate Node.js, Deno or anything like that here. This is about correctly embedding V8, so you can write part of your Rust applications in JavaScript.
 
 ### This branch contains my experimenal UI integration work
-It's building on top of the `master` branch and further refining it based on a "real world" use-case: driving UI from JavaScript. It uses `conrod` with `glium` for handling OpenGL and drawing stuff. Actually, `conrod` also supports `vulkano` and once I get a solid foundation, the goal is migrating it to `vulkano`.
+It's building on top of the `legacy` branch and further refining it based on a "real world" use-case: driving UI from JavaScript. It uses `conrod` with `glium` for handling OpenGL and drawing stuff. Actually, `conrod` also supports `vulkano` and once I get a solid foundation, the goal is migrating it to `vulkano`.
 
 ### What I already got working:
 - a way to call JavaScript code from Rust passing data and getting the result back
@@ -18,11 +18,12 @@ It's building on top of the `master` branch and further refining it based on a "
 - a generic way of defining (creating) UI elements from JavaScript
 - a generic way to update UI elements from JavaScript
 - a generic abstraction that allows `conrod` widgets to be "bridged" in order to be available within JavaScript
-- `conrod`'s `Text` widget (only a few properties are available at the moment, but it already works and more could easily be added)
+- `conrod`'s `Text` widget (a bunch of properties are already available and working, with more being very easy to add)
 
 ### What is missing:
 - Everything not mentioned above
 - I did implement some sort of error handling for my `require` implementation, but it should be noted that it won't forward the stack-trace back to JavaScript. This means that you can wrap a `require` call with a try-catch statement, and if the module throws an exception, it will be caught. However you won't get the stack-trace, just a miserable `required module has thrown an error` `Error` object. I'd like to make the `Error` object contain the stack-trace, but I still need to figure out a way to do it.
+- Proper way of letting V8 know that it can dispose some unused RAM. The GC is doing it's job for the most part, but there are some small memory leaks. This issue was worse before, and I already got some success in reducing the leak size. I've opened an issue on the `rusty_v8` repo, because after trying my best there still are leaks. (Albeit small, after a long period of execution, those add up).
 
 ### What this can be useful for
 - Use modern JavaScript as an embedded scripting language, instead of using LuaJIT (which is limited to Lua 5.1). For instance, you could write games and applications mainly in Rust, but some parts that you'd like to be easily moddable (eg. UI stuff) could be written in JavaScript.
