@@ -16,3 +16,7 @@ export const COLORS = {
     BLACK: Rgb(0, 0, 0),
     WHITE: Rgb(1, 1, 1),
 };
+
+export const DEFAULT_IDS = {
+    window: 'window'
+};

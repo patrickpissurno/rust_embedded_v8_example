@@ -69,6 +69,8 @@ fn main() {
         {
             let ui = &mut ui.set_widgets();
 
+            *ids.entry(String::from("window")).or_insert(ui.window) = ui.window;
+
             // executes the draw function of the current screen
             let widgets: Vec<JsWidget> = run_script_to_object!(scope, screen1_draw);
 

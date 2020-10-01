@@ -6,8 +6,13 @@ const COLORS = {
     WHITE: Rgb(1, 1, 1),
 };
 
+const DEFAULT_IDS = {
+    window: 'window'
+};
+
 module.exports = {
     COLORS,
+    DEFAULT_IDS,
     Rgb
 };
 

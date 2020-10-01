@@ -1,9 +1,9 @@
 /// <reference path="./corelib/global.d.ts"/>
 
 const { Text, Position, Dimension } = require('./corelib/widgets');
-const { Rgb, COLORS } = require('./corelib/utils');
+const { Rgb, COLORS, DEFAULT_IDS } = require('./corelib/utils');
 
-const ID = {
+const IDS = {
     text: 'text',
     text2: 'text2'
 };
@@ -26,7 +26,7 @@ class Screen1 {
         this.g = 0;
         this.b = 0;
 
-        return Object.keys(ID);
+        return Object.keys(IDS);
     }
 
     draw(){
@@ -92,11 +92,13 @@ class Screen1 {
     
         // log(this.text);
 
-        let xpos = Position.Relative(Position.Direction(Position.DirectionEnum.Forwards, 60), ID.text);
+        let center_window = Position.Relative(Position.Place(Position.PlaceEnum.Middle), DEFAULT_IDS.window);
+        let xpos = Position.Relative(Position.Direction(Position.DirectionEnum.Forwards, 60), IDS.text);
+        let ypos = Position.Relative(Position.Place(Position.PlaceEnum.Middle), IDS.text);
     
         return [
-            Text(ID.text, { text: this.text, font_size: 32, color: Rgb(this.r, this.g, this.b) }),
-            Text(ID.text2, { text: '123', font_size: this.size, color: COLORS.WHITE, x_position: xpos, x_dimension: Dimension.Absolute(10) }),
+            Text(IDS.text, { text: this.text, font_size: 32, color: Rgb(this.r, this.g, this.b), x_position: center_window, y_position: center_window }),
+            Text(IDS.text2, { text: '123', font_size: this.size, color: COLORS.WHITE, x_position: xpos, y_position: ypos, x_dimension: Dimension.Absolute(10) }),
         ];
     }
 
