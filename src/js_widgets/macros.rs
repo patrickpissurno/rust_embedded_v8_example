@@ -181,7 +181,7 @@ macro_rules! do_updates_dimension {
 macro_rules! do_updates_color {
     ($self:ident, $w:ident, $ids:ident) => {{
         $w = match &$self.color {
-            Some(c) => $w.color(conrod::Color::Rgba(c.0, c.1, c.2, c.3)),
+            Some(c) => $w.color(conrod_core::Color::Rgba(c.0, c.1, c.2, c.3)),
             _ => $w,
         };
     }}

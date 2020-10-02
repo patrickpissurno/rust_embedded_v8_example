@@ -1,4 +1,4 @@
-use conrod::{
+use conrod_core::{
     position, position::Dimension, widget, Colorable, Position, Positionable, Sizeable, Widget,
 };
 use serde::Deserialize;
@@ -36,7 +36,7 @@ pub struct Rectangle {
 }
 
 impl Rectangle {
-    pub fn do_updates(&self, ui: &mut conrod::UiCell, ids: &HashMap<String, conrod::widget::Id>) {
+    pub fn do_updates(&self, ui: &mut conrod_core::UiCell, ids: &HashMap<String, conrod_core::widget::Id>) {
         let id = ids.get(&self.id).unwrap();
 
         let mut w = {
