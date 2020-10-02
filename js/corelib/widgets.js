@@ -52,6 +52,7 @@ module.exports = {
     Dimension,
     Text,
     Rectangle,
+    Button,
 };
 
 function Text(id, params){
@@ -60,4 +61,8 @@ function Text(id, params){
 
 function Rectangle(id, params){
     return { Rectangle: Object.assign({ id }, params) };
+}
+
+function Button(id, params){
+    return { Button: Object.assign({ id }, params) };
 }

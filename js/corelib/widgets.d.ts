@@ -154,6 +154,18 @@ interface RectangleWidget extends Widget, Colorable, Positionable, Sizeable {
     outline?: boolean,
 }
 
+// Button widget
+interface ButtonWidgetWrapper {
+    Button: ButtonWidget
+}
+
+interface ButtonWidget extends Widget, Colorable, Positionable, Sizeable {
+    enabled?: boolean,
+    hover_color?: Color,
+    press_color?: Color,
+    label?: string,
+}
+
 /**
  * https://docs.rs/conrod_core/0.70.0/conrod_core/widget/primitive/text/struct.Text.html
  */
@@ -163,3 +175,8 @@ export function Text(id: string, params?: TextWidget): TextWidgetWrapper;
  * https://docs.rs/conrod_core/0.70.0/conrod_core/widget/primitive/shape/rectangle/struct.Rectangle.html
  */
 export function Rectangle(id: string, params?: RectangleWidget): RectangleWidgetWrapper;
+
+/**
+ * https://docs.rs/conrod_core/0.70.0/conrod_core/widget/button/struct.Button.html
+ */
+export function Button(id: string, params?: ButtonWidget): ButtonWidgetWrapper;

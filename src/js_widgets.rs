@@ -1,6 +1,7 @@
 use serde::Deserialize;
 use std::collections::HashMap;
 
+pub mod button;
 pub mod macros;
 pub mod rectangle;
 pub mod text;
@@ -54,15 +55,19 @@ pub enum Dimension {
 pub enum JsWidget {
     Text(text::Text),
     Rectangle(rectangle::Rectangle),
+    Button(button::Button),
 }
 
 impl JsWidget {
-    pub fn do_updates(&self, ui: &mut conrod::UiCell, ids: &HashMap<String, conrod::widget::Id>) {
+    pub fn do_updates(&self, ui: &mut conrod_core::UiCell, ids: &HashMap<String, conrod_core::widget::Id>) {
         match self {
             JsWidget::Text(w) => {
                 w.do_updates(ui, ids);
             }
             JsWidget::Rectangle(w) => {
+                w.do_updates(ui, ids);
+            }
+            JsWidget::Button(w) => {
                 w.do_updates(ui, ids);
             }
         }
